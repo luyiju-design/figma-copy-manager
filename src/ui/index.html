@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Copy Manager</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; background: #fff; color: #333; }
+    .tabs { display: flex; border-bottom: 1px solid #e5e5e5; }
+    .tab { flex: 1; padding: 10px; text-align: center; cursor: pointer; color: #666; border-bottom: 2px solid transparent; }
+    .tab.active { color: #7B61FF; border-bottom-color: #7B61FF; font-weight: 600; }
+    .tab-badge { background: #e53e3e; color: #fff; border-radius: 10px; padding: 1px 5px; font-size: 10px; margin-left: 4px; }
+    .tab-content { padding: 12px; }
+    .btn { border: none; border-radius: 6px; padding: 8px 12px; font-size: 12px; cursor: pointer; width: 100%; }
+    .btn-primary { background: #7B61FF; color: #fff; }
+    .btn-secondary { background: #f0f0f0; color: #333; }
+    .btn-danger { background: #e53e3e; color: #fff; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .row { display: flex; gap: 8px; margin-bottom: 8px; }
+    .badge { border-radius: 10px; padding: 2px 8px; font-size: 10px; }
+    .badge-ok { background: #e6f4ea; color: #2e7d32; }
+    .badge-conflict { background: #fce8e6; color: #c62828; }
+    .badge-unmatched { background: #f5f0ff; color: #5c35cc; }
+    .error { color: #c62828; background: #fce8e6; padding: 8px; border-radius: 4px; margin-bottom: 8px; font-size: 11px; }
+    input, select { border: 1px solid #ddd; border-radius: 4px; padding: 6px 8px; font-size: 12px; width: 100%; }
+    label { font-size: 11px; color: #666; margin-bottom: 4px; display: block; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./main.tsx"></script>
+</body>
+</html>
