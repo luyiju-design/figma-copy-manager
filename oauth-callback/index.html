@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head><title>Copy Manager - Auth</title></head>
+<body>
+  <p>授權成功，請回到 Figma 外掛</p>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const state = params.get('state');
+    if (code && window.opener) {
+      window.opener.postMessage({ type: 'OAUTH_CODE', code, state }, '*');
+      window.close();
+    }
+  </script>
+</body>
+</html>
