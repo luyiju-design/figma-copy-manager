@@ -21,16 +21,38 @@ export default function TabSync({ state, dispatch }: Props) {
 
       const code = await new Promise<string>((resolve, reject) => {
         const popup = window.open(authUrl, '_blank', 'width=500,height=600');
+
+        if (!popup) {
+          reject(new Error('彈出視窗被封鎖，請允許此網頁開啟彈出視窗後重試'));
+          return;
+        }
+
         const handler = (e: MessageEvent) => {
           if (e.data?.type === 'OAUTH_CODE') {
             window.removeEventListener('message', handler);
-            popup?.close();
+            clearInterval(popupChecker);
+            clearTimeout(timer);
+            popup.close();
             resolve(e.data.code);
           }
         };
+
+        // Detect popup closed by user
+        const popupChecker = setInterval(() => {
+          if (popup.closed) {
+            clearInterval(popupChecker);
+            clearTimeout(timer);
+            window.removeEventListener('message', handler);
+            reject(new Error('授權視窗已關閉，請重試'));
+          }
+        }, 500);
+
         window.addEventListener('message', handler);
-        setTimeout(() => {
+
+        const timer = setTimeout(() => {
+          clearInterval(popupChecker);
           window.removeEventListener('message', handler);
+          if (!popup.closed) popup.close();
           reject(new Error('授權逾時，請重試'));
         }, 120000);
       });
@@ -50,6 +72,10 @@ export default function TabSync({ state, dispatch }: Props) {
       dispatch({ type: 'SET_ERROR', message: '請輸入 Spreadsheet ID' });
       return;
     }
+    if (!/^[a-zA-Z0-9_-]{20,}$/.test(state.spreadsheetId.trim())) {
+      dispatch({ type: 'SET_ERROR', message: 'Spreadsheet ID 格式不正確，請從 Google Sheets URL 複製' });
+      return;
+    }
     dispatch({ type: 'SET_LOADING', value: true });
     dispatch({ type: 'SET_ERROR', message: null });
     try {
@@ -58,6 +84,13 @@ export default function TabSync({ state, dispatch }: Props) {
       const entries = await fetchSheetEntries(state.spreadsheetId, token.accessToken);
       dispatch({ type: 'SET_SHEET_ENTRIES', entries });
       sendToMain({ type: 'SCAN_CANVAS', scope: state.scope, language: state.language });
+      // Safety timeout: if plugin sandbox doesn't respond in 30s, reset loading
+      const timeoutId = setTimeout(() => {
+        dispatch({ type: 'SET_ERROR', message: '掃描逾時，請重試' });
+        dispatch({ type: 'SET_LOADING', value: false });
+      }, 30000);
+      // Store timeout ID so it can be cleared when SCAN_RESULT arrives
+      (window as any).__scanTimeout = timeoutId;
     } catch (e) {
       dispatch({ type: 'SET_ERROR', message: String(e) });
       dispatch({ type: 'SET_LOADING', value: false });

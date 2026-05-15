@@ -11,6 +11,7 @@ interface Props {
 
 export default function TabExport({ state, dispatch }: Props) {
   const [isWritingBack, setIsWritingBack] = useState(false);
+  const [writeSuccess, setWriteSuccess] = useState(false);
 
   function handleExport() {
     if (state.sheetEntries.length === 0) {
@@ -31,6 +32,8 @@ export default function TabExport({ state, dispatch }: Props) {
       const token = await getStoredToken();
       if (!token) throw new Error('尚未授權，請先連結 Google');
       await writeSheetEntries(state.spreadsheetId, token.accessToken, state.sheetEntries);
+      setWriteSuccess(true);
+      setTimeout(() => setWriteSuccess(false), 3000);
     } catch (e) {
       dispatch({ type: 'SET_ERROR', message: String(e) });
     } finally {
@@ -63,6 +66,10 @@ export default function TabExport({ state, dispatch }: Props) {
       >
         {isWritingBack ? '寫回中...' : '寫回 Google Sheets'}
       </button>
+
+      {writeSuccess && (
+        <div style={{ color: '#2e7d32', fontSize: 11, marginTop: 6 }}>✓ 已成功寫回 Google Sheets</div>
+      )}
 
       <div style={{ marginTop: 12, fontSize: 10, color: '#aaa', lineHeight: 1.6 }}>
         「下載 CSV」可寄給客戶確認。<br />

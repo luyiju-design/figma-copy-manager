@@ -12,6 +12,7 @@ export default function App() {
   useEffect(() => {
     return onMainMessage(msg => {
       if (msg.type === 'SCAN_RESULT') {
+        clearTimeout((window as any).__scanTimeout);
         dispatch({ type: 'SET_CANVAS_ENTRIES', entries: msg.entries });
         dispatch({ type: 'COMPUTE_DIFF' });
         dispatch({ type: 'SET_LOADING', value: false });
