@@ -24,6 +24,7 @@ export async function fetchSheetEntries(
   const rows: string[][] = data.values ?? [];
   if (rows.length < 2) return [];
 
+  // Column order: A=key, B=zh-TW, C=en, D=status, E=note. Header names are ignored.
   return rows.slice(1).map(([key = '', zhTW = '', en = '', status = '', note = '']) => ({
     key: key.trim(),
     zhTW: zhTW.trim(),
