@@ -4,7 +4,9 @@
   "description": "",
   "main": "dist/main.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "dev": "vite build --watch",
+    "build": "vite build"
   },
   "keywords": [],
   "author": "",
