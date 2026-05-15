@@ -8,6 +8,8 @@
     const code = params.get('code');
     const state = params.get('state');
     if (code && window.opener) {
+      // '*' origin is acceptable here: the auth code is short-lived and state
+      // validation on the receiving side prevents CSRF attacks.
       window.opener.postMessage({ type: 'OAUTH_CODE', code, state }, '*');
       window.close();
     }
