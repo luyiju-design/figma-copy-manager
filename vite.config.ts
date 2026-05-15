@@ -4,16 +4,18 @@ import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
+  root: 'src/ui',
   build: {
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'src/main.ts'),
-        ui: resolve(__dirname, 'src/ui/index.html'),
+        index: resolve(__dirname, 'src/ui/index.html'),
       },
       output: {
         entryFileNames: '[name].js',
       },
     },
-    outDir: 'dist',
+    outDir: resolve(__dirname, 'dist'),
+    emptyOutDir: true,
   },
 });
