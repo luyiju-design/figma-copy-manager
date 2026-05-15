@@ -48,7 +48,11 @@ function reducer(state: AppState, action: AppAction): AppState {
     case 'SET_SCOPE': return { ...state, scope: action.scope };
     case 'SET_SPREADSHEET_ID': return { ...state, spreadsheetId: action.id };
     case 'SET_AUTHENTICATED': return { ...state, isAuthenticated: action.value };
-    case 'SET_LOADING': return { ...state, isLoading: action.value };
+    case 'SET_LOADING': return {
+      ...state,
+      isLoading: action.value,
+      error: action.value ? null : state.error,
+    };
     case 'SET_ERROR': return { ...state, error: action.message };
     case 'SET_SHEET_ENTRIES': return { ...state, sheetEntries: action.entries };
     case 'SET_CANVAS_ENTRIES': return { ...state, canvasEntries: action.entries };

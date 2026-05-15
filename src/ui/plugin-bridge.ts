@@ -11,7 +11,7 @@ window.addEventListener('message', (event) => {
 });
 
 export function sendToMain(msg: UIToMainMessage) {
-  parent.postMessage({ pluginMessage: msg }, '*');
+  parent.postMessage({ pluginMessage: msg }, parent.origin || '*');
 }
 
 export function onMainMessage(handler: MessageHandler) {

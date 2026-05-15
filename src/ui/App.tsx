@@ -24,7 +24,7 @@ export default function App() {
         dispatch({ type: 'SET_LOADING', value: false });
       }
     });
-  }, []);
+  }, [dispatch]);
 
   const conflictCount = state.syncResult?.conflicts.length ?? 0;
 
