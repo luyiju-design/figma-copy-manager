@@ -1,0 +1,15 @@
+{
+  "name": "Copy Manager",
+  "id": "copy-manager",
+  "api": "1.0.0",
+  "main": "dist/main.js",
+  "ui": "dist/index.html",
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": [
+      "https://sheets.googleapis.com",
+      "https://oauth2.googleapis.com",
+      "https://accounts.google.com"
+    ]
+  }
+}
