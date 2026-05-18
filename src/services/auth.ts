@@ -1,6 +1,6 @@
 // src/services/auth.ts
-const CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID';
-const REDIRECT_URI = 'https://your-org.github.io/copy-manager-oauth/';
+const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
+const REDIRECT_URI = 'https://luyiju-design.github.io/figma-copy-manager/oauth-callback/';
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
 const TOKEN_STORAGE_KEY = 'google_access_token';
 const EXPIRY_STORAGE_KEY = 'google_token_expiry';
@@ -48,7 +48,7 @@ export async function exchangeCodeForToken(code: string): Promise<AuthToken> {
     body: new URLSearchParams({
       code,
       client_id: CLIENT_ID,
-      client_secret: 'YOUR_GOOGLE_CLIENT_SECRET',
+      client_secret: import.meta.env.VITE_GOOGLE_CLIENT_SECRET as string,
       redirect_uri: REDIRECT_URI,
       grant_type: 'authorization_code',
     }),
